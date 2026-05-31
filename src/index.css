@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Space Grotesk", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-display: "Syne", sans-serif;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 4px rgba(37, 211, 102, 0.4), 0 0 10px rgba(37, 211, 102, 0.2);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(37, 211, 102, 0.8), 0 0 28px rgba(37, 211, 102, 0.5);
+    transform: scale(1.02);
+  }
+}
+
+.animate-pulseGlow {
+  animation: pulseGlow 2000ms infinite ease-in-out;
+}
+
+@keyframes scanLaser {
+  0% { top: 0%; }
+  50% { top: 100%; }
+  100% { top: 0%; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-scanLaser {
+  animation: scanLaser 2000ms linear infinite;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 300ms ease-out forwards;
+}
+
+/* Custom dashboard analytics styling optimized for client-side viewport zoom adjustments (80% / 90% / 100%) */
+#dashboard-analytics-card {
+  padding: clamp(1rem, 2vw, 1.75rem);
+  gap: clamp(1rem, 2vw, 1.75rem);
+  background-color: #0c0c0e;
+  border-color: #1f1f22;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Fluid responsive layout with auto-fit and clamp spacing for extreme zoom compatibility */
+#dashboard-analytics-card .analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+
+/* Cohesive, highly readable dark visual styling for cards with prominent metrics */
+#dashboard-analytics-card .kpi-card {
+  background-color: #030303;
+  border: 1px solid #222226; /* Slightly brighter border to enhance visibility */
+  padding: clamp(0.85rem, 1.5vw, 1.25rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+#dashboard-analytics-card .kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background-color: transparent;
+  transition: background-color 0.25s ease;
+}
+
+#dashboard-analytics-card .kpi-card:hover {
+  border-color: #25D366;
+  background-color: #070e0a;
+}
+
+#dashboard-analytics-card .kpi-card:hover::before {
+  background-color: #25D366;
+}
+
+/* Adjust font sizing, contrast and alignment with Pro-Max WCAG AA/AAA compliance */
+#dashboard-analytics-card .kpi-title {
+  font-size: 0.8rem; /* Highly visible card header text */
+  line-height: 1.1rem;
+  font-weight: 700;
+  color: #e4e4e7; /* High contrast zinc-200 (fabulous >7:1 contrast ratios on dark backgrounds) */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--font-sans);
+  text-align: left;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+#dashboard-analytics-card .kpi-value {
+  font-size: clamp(1.5rem, 2.5vw, 1.85rem); /* Pro-max responsive metric values */
+  line-height: clamp(1.8rem, 2.5vw, 2.1rem);
+  font-weight: 900;
+  color: #ffffff;
+  font-family: var(--font-mono);
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+/* Accessible text classes for nested subtitles and footers */
+#dashboard-analytics-card .accessible-subtitle {
+  color: #a1a1aa; /* High contrast zinc-400 (passes 4.5:1 check for small body text) */
+}
+
+#dashboard-analytics-card .accessible-footer {
+  color: #a1a1aa; /* High contrast zinc-400 (passes 4.5:1 check) */
+}
+
+/* Align and format the icon backgrounds cohesively */
+#dashboard-analytics-card .kpi-icon-wrapper {
+  padding: 0.75rem;
+  background-color: rgba(37, 211, 102, 0.08); /* Boosted opacity for better visibility */
+  border: 1px solid rgba(37, 211, 102, 0.25); /* Stronger contrast for outline shape */
+  color: #25D366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+}
+
+#dashboard-analytics-card .kpi-card:hover .kpi-icon-wrapper {
+  background-color: #25D366;
+  color: #000000;
+  box-shadow: 0 0 12px rgba(37, 211, 102, 0.35);
+}
+
+/* Make Recharts area highly polished and readable */
+#dashboard-analytics-card .chart-area-parent {
+  background-color: rgba(3, 3, 3, 0.65);
+  border: 1px solid #1c1c1f;
+  padding: clamp(0.75rem, 1.5vw, 1.25rem);
+  border-radius: 0px;
+}
+

@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 1. Global Safety Net (Default Deny Catch-all)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Reuseable global helpers for secure access logic
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Logic-based validation helper for AgentConfig integrity
+    function isValidAgentConfig(data) {
+      return data.keys().hasAll(['name', 'avatarSeed', 'bio', 'systemPrompt', 'toneStyle', 'faq', 'flowRules']) 
+        && data.keys().size() <= 11
+        && data.name is string && data.name.size() > 0 && data.name.size() <= 100
+        && data.avatarSeed is string && data.avatarSeed.size() <= 128
+        && (!data.keys().hasAny(['avatarImage']) || (data.avatarImage is string && data.avatarImage.size() <= 1048576))
+        && (!data.keys().hasAny(['selectedModel']) || (data.selectedModel is string && (data.selectedModel == 'gemini-3.5-flash' || data.selectedModel == 'gemini-3.1-pro-preview')))
+        && (!data.keys().hasAny(['isFallbackActive']) || data.isFallbackActive is bool)
+        && (!data.keys().hasAny(['fallbackReason']) || (data.fallbackReason is string && data.fallbackReason.size() <= 1000))
+        && data.bio is string && data.bio.size() <= 500
+        && data.systemPrompt is string && data.systemPrompt.size() <= 8000
+        && data.toneStyle is string && (data.toneStyle == 'formal' || data.toneStyle == 'casual' || data.toneStyle == 'warm' || data.toneStyle == 'assertive')
+        && data.faq is list && data.faq.size() <= 100
+        && data.flowRules is list && data.flowRules.size() <= 100;
+    }
+
+    // Match statement for the AgentConfig configuration resource
+    match /users/{userId}/config/{configId} {
+      allow read: if isOwner(userId) && isValidId(configId);
+      allow create: if isOwner(userId) && isValidId(configId) && isValidAgentConfig(request.resource.data);
+      allow update: if isOwner(userId) && isValidId(configId) && isValidAgentConfig(request.resource.data);
+      allow delete: if isOwner(userId) && isValidId(configId);
+    }
+  }
+}

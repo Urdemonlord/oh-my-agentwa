@@ -1,0 +1,64 @@
+{
+  "entities": {
+    "AgentConfig": {
+      "title": "AgentConfig",
+      "description": "Configuration schema for the AI WhatsApp Agent",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the AI Agent"
+        },
+        "avatarSeed": {
+          "type": "string",
+          "description": "Seed for generating avatar"
+        },
+        "avatarImage": {
+          "type": "string",
+          "description": "Base64 encoded or camera uploaded avatar image URL"
+        },
+        "bio": {
+          "type": "string",
+          "description": "Bio description of the AI Agent"
+        },
+        "systemPrompt": {
+          "type": "string",
+          "description": "Prompt containing system rules and personality of the AI agent"
+        },
+        "toneStyle": {
+          "type": "string",
+          "enum": ["formal", "casual", "warm", "assertive"],
+          "description": "Conversation tone of the AI Agent"
+        },
+        "faq": {
+          "type": "array",
+          "description": "Pre-configured FAQ items for knowledge base"
+        },
+        "flowRules": {
+          "type": "array",
+          "description": "Pre-configured routing flow rules"
+        },
+        "selectedModel": {
+          "type": "string",
+          "enum": ["gemini-3.5-flash", "gemini-3.1-pro-preview"],
+          "description": "The selected AI model to power the WhatsApp Agent"
+        },
+        "isFallbackActive": {
+          "type": "boolean",
+          "description": "Whether the synthetic local fallback is currently active"
+        },
+        "fallbackReason": {
+          "type": "string",
+          "description": "The reason the synthetic local fallback is active"
+        }
+      },
+      "required": ["name", "avatarSeed", "bio", "systemPrompt", "toneStyle"]
+    }
+  },
+  "firestore": {
+    "users/{userId}/config/default": {
+      "schema": "AgentConfig",
+      "description": "The custom persistent configuration for a signed-in user's WhatsApp AI Agent"
+    }
+  }
+}

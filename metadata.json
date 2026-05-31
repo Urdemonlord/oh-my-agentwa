@@ -1,0 +1,6 @@
+{
+  "name": "oh my agentwa",
+  "description": "Create secure AI Employees for WhatsApp with automated Zero-Trust PII and sensitive data masking protection.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
